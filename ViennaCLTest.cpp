@@ -6,7 +6,6 @@
 using namespace std;
 
 // http://viennacl.sourceforge.net/doc/manual-operations.html
-// http://viennacl.sourceforge.net/doc/manual-algorithms.html#manual-algorithms-eigenvalues
 #include <viennacl/linalg/norm_2.hpp>
 #include <viennacl/linalg/inner_prod.hpp>
 #include <viennacl/linalg/prod.hpp>
@@ -164,12 +163,9 @@ void autovettori(){
     viennacl::matrix<float> mat = leggiMatriceQuadrata(0),
             ris1(mat.size1(), mat.size2());
 
-
+    // http://viennacl.sourceforge.net/doc/manual-algorithms.html#manual-algorithms-eigenvalues
     // http://viennacl.sourceforge.net/doc/lanczos_8cpp-example.html#_a5
-    viennacl::linalg::lanczos_tag ltag(0.75, // Precisione
-                                       mat.size1(), // Numero di autovalori più grandi da calcolare
-                                       viennacl::linalg::lanczos_tag::partial_reorthogonalization,
-                                       30); // Bho
+    viennacl::linalg::lanczos_tag ltag(0.75, mat.size1());
 
     vector<float> ris2 = eig(mat, ris1, ltag);
     viennacl::backend::finish();
