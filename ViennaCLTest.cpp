@@ -39,7 +39,7 @@ viennacl::vector<float> leggiVettore(unsigned dimensione){
 
 viennacl::matrix<float> leggiMatrice(unsigned righe, unsigned colonne){
     // Prepara la dimensione
-    if(righe == 0){
+    while(righe == 0){
         cout << "Numero di righe della matrice? ";
         cin >> righe;
     }
@@ -65,6 +65,15 @@ viennacl::matrix<float> leggiMatrice(unsigned righe, unsigned colonne){
 
     cout << "Matrice: " << cl_mat << endl;
     return cl_mat;
+}
+
+viennacl::matrix<float> leggiMatriceQuadrata(unsigned ordine){
+    while(ordine == 0){
+        cout << "Ordine matrice? ";
+        cin >> ordine;
+    }
+
+    return leggiMatrice(ordine, ordine);
 }
 
 viennacl::matrix<float> identita(unsigned ordine){
@@ -140,12 +149,8 @@ void sistemaLineare(){
 
 // https://sourceforge.net/p/viennacl/mailman/message/35357381/
 void inversa(){
-    float n;
-    cout << "Ordine della matrice? ";
-    cin >> n;
-
-    viennacl::matrix<float> mat1 = leggiMatrice(n,n),
-            mat2 = identita(n);
+    viennacl::matrix<float> mat1 = leggiMatriceQuadrata(0),
+            mat2 = identita(mat1.size1());
 
     lu_factorize(mat1);
     lu_substitute(mat1, mat2);
