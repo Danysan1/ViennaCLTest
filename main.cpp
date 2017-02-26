@@ -7,6 +7,8 @@ int main(int argc, char *argv[])
 {
     char buffer = 0;
     while((cout << "Comando? (L:lista comandi,  EOF:esci) ") && (cin >> buffer)){
+        cout << endl;
+
         switch(buffer){
         case 'L':
         case 'l':
@@ -55,7 +57,7 @@ int main(int argc, char *argv[])
             break;
 
         default:
-            cout << "Comando sconosciuto" << endl;
+            cout << "Comando sconosciuto: " << buffer << endl;
             break;
         }
 

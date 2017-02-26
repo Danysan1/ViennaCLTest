@@ -1,5 +1,6 @@
 #include "ViennaCLTest.h"
 
+#include <cstdio> // printf()
 #include <iostream> // std::cin, std::cout
 #include <vector> // std::vector
 using namespace std;
@@ -20,7 +21,7 @@ viennacl::vector<float> leggiVettore(unsigned dimensione){
         cout << "Dimensione vettore? ";
         cin >> dimensione;
     }
-    cout << "Creazione vettore di dimensione " << dimensione << endl;
+    cout << endl << "Creazione vettore di dimensione " << dimensione << endl;
 
     // Leggi i valori (per la CPU)
     vector<float> vec(dimensione);
@@ -33,7 +34,7 @@ viennacl::vector<float> leggiVettore(unsigned dimensione){
     viennacl::vector<float> cl_vec(dimensione);
     viennacl::copy(vec, cl_vec);
 
-    cout << "Vettore: " << cl_vec << endl;
+    cout << endl << "Vettore: " << cl_vec << endl;
     return cl_vec;
 }
 
@@ -44,10 +45,10 @@ viennacl::matrix<float> leggiMatrice(unsigned righe, unsigned colonne){
         cin >> righe;
     }
     while(colonne == 0){
-        cout << "Numero di colonne della matrice? ";
+        cout << endl << "Numero di colonne della matrice? ";
         cin >> colonne;
     }
-    cout << "Creazione matrice " << righe << "x" << colonne << endl;
+    cout << endl << "Creazione matrice " << righe << "x" << colonne << endl;
 
     // Leggi i valori (per la CPU)
     vector<vector<float> > mat(righe);
@@ -63,7 +64,7 @@ viennacl::matrix<float> leggiMatrice(unsigned righe, unsigned colonne){
     viennacl::matrix<float> cl_mat(righe, colonne);
     viennacl::copy(mat, cl_mat);
 
-    cout << "Matrice: " << cl_mat << endl;
+    cout << endl << "Matrice: " << cl_mat << endl;
     return cl_mat;
 }
 
@@ -160,5 +161,24 @@ void inversa(){
 }
 
 void autovettori(){
+    viennacl::matrix<float> mat = leggiMatriceQuadrata(0),
+            ris1(mat.size1(), mat.size2());
 
+
+    // http://viennacl.sourceforge.net/doc/lanczos_8cpp-example.html#_a5
+    viennacl::linalg::lanczos_tag ltag(0.75, // Precisione
+                                       mat.size1(), // Numero di autovalori più grandi da calcolare
+                                       viennacl::linalg::lanczos_tag::partial_reorthogonalization,
+                                       30); // Bho
+
+    vector<float> ris2 = eig(mat, ris1, ltag);
+    viennacl::backend::finish();
+
+    cout << "Autovalori e Autovettori: [" << ris2.size() << "]" << endl;
+    for (unsigned i = 0; i<ris2.size(); i++){
+      cout << ris2[i] << " -> (";
+      for(unsigned k = 0; k < ris1.size2(); k++)
+          printf("%1.2f ", static_cast<float>(ris1(k,i)));
+      cout << ")" << endl;
+    }
 }
