@@ -1,5 +1,4 @@
-#include <cstdio>
-#include <cctype>
+#include <iostream>
 #include "ViennaCLTest.h"
 
 using namespace std;
@@ -7,23 +6,17 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     char buffer = 0;
-    while(1){
-        printf("Comando? (L:lista comandi,  EOF:esci) ");
-
-        do {
-            buffer = getchar();
-        } while (isspace(buffer));
-
+    while((cout << "Comando? (L:lista comandi,  EOF:esci) ") && (cin >> buffer)){
         switch(buffer){
         case 'L':
         case 'l':
-            puts("M: Modulo");
-            puts("P: Prodotto scalare");
-            puts("Q: Prodotto matrice vettore");
-            puts("R: Prodotto matrice matrice");
-            puts("S: Sistema lineare");
-            puts("I: Inversa");
-            puts("A: Autovettori");
+            cout << "M: Modulo" << endl
+                 << "P: Prodotto scalare" << endl
+                 << "Q: Prodotto matrice vettore" << endl
+                 << "R: Prodotto matrice matrice" << endl
+                 << "S: Sistema lineare" << endl
+                 << "I: Inversa" << endl
+                 << "A: Autovettori" << endl;
             break;
 
         case 'M':
@@ -57,19 +50,18 @@ int main(int argc, char *argv[])
             break;
 
         case 'A':
-        case'a':
+        case 'a':
             autovettori();
             break;
 
-        case EOF:
-            putchar('\n');
-            return 0;
-
         default:
-            puts("Comando sconosciuto");
+            cout << "Comando sconosciuto" << endl;
             break;
         }
 
-        putchar('\n');
+        cout << endl;
     }
+
+    cout << endl;
+    return 0;
 }
