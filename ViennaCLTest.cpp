@@ -178,3 +178,32 @@ void autovettori(){
       cout << ")" << endl;
     }
 }
+
+void stressTest(){
+#define DIM_STRESS 1000
+    vector<vector<float> > mat1(DIM_STRESS), mat2(DIM_STRESS);
+    viennacl::matrix<float> cl_mat1(DIM_STRESS, DIM_STRESS), cl_mat2(DIM_STRESS, DIM_STRESS);
+    for(unsigned i=0; i < DIM_STRESS; i++){
+        mat1[i] = vector<float>(DIM_STRESS);
+        for(unsigned k=0; k < DIM_STRESS; k++)
+            mat1[i][k] = rand();
+
+        mat2[i] = vector<float>(DIM_STRESS);
+        for(unsigned k=0; k < DIM_STRESS; k++)
+            mat2[i][k] = rand();
+    }
+
+    for(unsigned counter = 0;  ; counter++){
+        printf("%u: Copia... ", counter);
+        fflush(stdout);
+        viennacl::copy(mat1, cl_mat1);
+        viennacl::copy(mat2, cl_mat2);
+
+        printf(" risoluzione... ");
+        fflush(stdout);
+        viennacl::matrix<float> ris = solve(cl_mat1, cl_mat2, upper_tag());
+        viennacl::backend::finish();
+
+        puts("fine");
+    }
+}

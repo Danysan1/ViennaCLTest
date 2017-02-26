@@ -56,6 +56,11 @@ int main(int argc, char *argv[])
             autovettori();
             break;
 
+        case 'X':
+        case 'x':
+            stressTest();
+            break;
+
         default:
             cout << "Comando sconosciuto: " << buffer << endl;
             break;

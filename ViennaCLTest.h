@@ -8,5 +8,6 @@ void prodottoMatriceMatrice();
 void sistemaLineare();
 void inversa();
 void autovettori();
+void stressTest();
 
 #endif // VIENNACLTEST_H
